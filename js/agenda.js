@@ -13,16 +13,19 @@
         this.firstDate = new Date(year, month, 1);
         this.lastDate = new Date(year, month + 1, 0);
         
+        this.occupiedDays = [];
+        
         this.dayNames = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"];
         this.monthNames = ["Janvier", "FÃ©vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "AoÃ»t", "Septembre", "Octobre", "Novembre", "DÃ©cembre"];
 		
-		this.render();
+		this.getEventsAndRender();
 	};
  
 	Calendar.prototype = {
 		constructor: Calendar,
-		getGoogleEvents: function() {
+		getEventsAndRender: function() {
 			var events = [];
+            var that = this;
 			
             $.ajax({
                 url: "https://content.googleapis.com/calendar/v3/calendars/m6t1df6s0fbnuhulearfu44cmo%40group.calendar.google.com/events?key=AIzaSyAuYs5D3rOhEiOI8LWPJpFBoCJNJbvWJpY",
@@ -31,15 +34,20 @@
                     "timeMax": this.lastDate.toISOString()
                 }
             }).then(function(data) {
-               console.log(data);
+                console.log(data);
+                if (data.items.length > 0) {
+                    for (var e in data.items) {
+                        var eventStartDate = new Date(data.items[e].start.date);
+                        eventStartDate.setHours(0,0,0,0);
+                        events.push(eventStartDate);
+                    }
+                }
+                
+                that.render(events);
             });
-			
-			return events;
 		},
-        render: function() {
+        render: function(occupiedDays) {
             this.agendaElem.empty();
-    
-            var occupiedDays = this.getGoogleEvents();
 
             // display agenda header
             var headerRow = $(document.createElement('div'));

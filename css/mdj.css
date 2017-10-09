@@ -42,6 +42,15 @@ body {
 }
 
 
+/* CUSTOMIZE THE AGENDA
+-------------------------------------------------- */
+.occupied{
+    background-color: #cccccc;
+    color: #777777;
+    text-decoration: line-through;
+}
+
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 
