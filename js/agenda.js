@@ -73,4 +73,23 @@ $(function() {
         agendaElem.append(row);
     }
 });
- 
+
+$(document).ready(function() {
+    var newDate = new Date();
+    var day = newDate.getDate();
+    var month = newDate.getMonth();
+    var year = newDate.getFullYear();
+    
+    var firstDate = new Date(year, month, 1);
+    var lastDate = new Date(year, month + 1, 0);
+    
+    $.ajax({
+        url: "https://content.googleapis.com/calendar/v3/calendars/m6t1df6s0fbnuhulearfu44cmo%40group.calendar.google.com/events?key=AIzaSyAuYs5D3rOhEiOI8LWPJpFBoCJNJbvWJpY",
+        data: {
+            "timeMin": firstDate.toISOString(),
+            "timeMax": lastDate.toISOString()
+        }
+    }).then(function(data) {
+       console.log(data);
+    });
+}); 
