@@ -1,13 +1,26 @@
 <?php
     date_default_timezone_set('Europe/Zurich');
     $oneDayInterval = new DateInterval('P1D');
+    $monthNames = array("Jan", "F&eacute;v", "Mar", "Avr", "Mai", "Jui", "Jui", "Ao&ucirc;", "Sep", "Oct", "Nov", "D&eacute;c");
     
-    $monthNames = array("Janvier", "FÃ©vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "AoÃ»t", "Septembre", "Octobre", "Novembre", "DÃ©cembre");
+    if(isset($_GET['month'])){
+        $paramDate = DateTime::createFromFormat('m-Y', $_GET['month']);
+        if(!$paramDate){
+            $paramDate = new DateTime();
+        }
+    }else{
+        $paramDate = new DateTime();
+    }
+    
+    
+    //$paramDate = new DateTime();
 
-    $firstDay = new DateTime('first day of this month');
+    $firstDay = clone $paramDate;
+    $firstDay->modify('first day of this month');
     $firstDay->setTime(0,0,0);
     
-    $lastDay = new DateTime('last day of this month');
+    $lastDay = clone $paramDate;
+    $lastDay->modify('last day of this month');
     $lastDay->setTime(0,0,0);
     
     // var_dump($firstDate);
@@ -92,15 +105,35 @@
             </div>
             
             <div class="container agenda">
+                <div class="row">
+                    <?php
+                        $prevDate = clone $paramDate;
+                        $prevDate->modify('-1 month');
+                        
+                        $nextDate = clone $paramDate;
+                        $nextDate->modify('+1 month');
+                    
+                        $prev = $monthNames[$prevDate->format('n')-1] . ' ' . $prevDate->format('Y');
+                        $curr = $monthNames[$firstDay->format('n')-1] . ' ' . $firstDay->format('Y');
+                        $next = $monthNames[$nextDate->format('n')-1] . ' ' . $nextDate->format('Y');
+                    ?>
+                
+                    <a class="py-0 btn btn-outline-secondary" style="cursor:pointer" href="reservations.php?month=<?php echo $prevDate->format('m-Y') ?>"><?php echo $prev; ?></a>
+                    <div class="p-0 btn">&lt;&lt;</div>
+                    <div class="py-0 btn" style="cursor:pointer"><?php echo $curr; ?></div>
+                    <div class="p-0 btn">&gt;&gt;</div>
+                    <a class="py-0 btn btn-outline-secondary" style="cursor:pointer" href="reservations.php?month=<?php echo $nextDate->format('m-Y') ?>"><?php echo $next; ?></a>
+                </div>
+                <br />
                 <div id="calendar">
                     <div class="row">
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">L</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">M</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">M</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">J</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">V</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">S</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">D</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Lu</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Ma</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Me</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Je</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Ve</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Sa</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark p-0">Di</div>
                     </div>
                     <?php
                         $today = new DateTime();
@@ -124,14 +157,18 @@
                             }
                             
                             // today
-                            if($currentDate == $today){
-                                $class .= "  bg-warning";
+                            if($currentDate < $today){
+                                $class .= "  bg-secondary";
+                            }else if($currentDate == $today){
+                                $class .= " bg-warning";
+                            }else{
+                                $class .= "";
                             }
                             
                             if($currentDate < $firstDay){
-                                echo "<div class='$class previous'>&nbsp;</div>";
+                                echo "<div class='$class not-month'>&nbsp;</div>";
                             }else if($currentDate > $lastDay){
-                                echo "<div class='$class future'>&nbsp;</div>";
+                                echo "<div class='$class future-month'>&nbsp;</div>";
                             }else{
                                 //reservations
                                 if(in_array($currentDate, $reservations)){
