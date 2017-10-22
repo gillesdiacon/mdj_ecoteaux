@@ -46,19 +46,48 @@
                 that.render(events);
             });
 		},
+        previousDate: function() {
+            console.log(this.firstDate.setMonth(this.firstDate.getMonth()-1);
+        },
         render: function(occupiedDays) {
             this.agendaElem.empty();
 
             // display agenda header
             var headerRow = $(document.createElement('div'));
             headerRow.addClass('row');
+            this.agendaElem.append(headerRow);
+            
+            // previous month
+            var prevElem = $(document.createElement('div'));
+            prevElem.addClass('btn');
+			prevElem.text(this.today.getFullYear() + ' - ' + this.monthNames[this.today.getMonth() - 1] + " <");
+            prevElem.onclick = function(this.previousDate());
+            headerRow.append(prevElem);
+
+            // today
+            var todayElem = $(document.createElement('span'));
+            todayElem.addClass('btn');
+			todayElem.text(this.today.getFullYear() + ' - ' + this.monthNames[this.today.getMonth()]);
+            todayElem.onclick = function(this.previousDate());
+			headerRow.append(todayElem);
+
+            // next month
+            var nextElem = $(document.createElement('div'));
+            nextElem.addClass('btn');
+			nextElem.text("> " + this.today.getFullYear() + ' - ' + this.monthNames[this.today.getMonth() + 1]);
+            nextElem.onclick = function(this.previousDate());
+            headerRow.append(nextElem);
+            
+            // display name of the day
+            var dayNameRow = $(document.createElement('div'));
+            dayNameRow.addClass('row');
             for(var d = 0; d < 7; d++){
                 var headerCell = $(document.createElement('div'));
                 headerCell.addClass('col border border-left-0 border-right-0 border-top-0 border-dark');
                 headerCell.text(this.dayNames[d]);
-                headerRow.append(headerCell);
+                dayNameRow.append(headerCell);
             }
-            this.agendaElem.append(headerRow);
+            this.agendaElem.append(dayNameRow);
 
             var currentDate = new Date(this.firstDate.getTime());
             while (currentDate.getDay() != 1) {
