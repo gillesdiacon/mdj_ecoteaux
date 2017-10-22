@@ -94,13 +94,13 @@
             <div class="container agenda">
                 <div id="calendar">
                     <div class="row">
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Lun</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Mar</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Mer</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Jeu</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Ven</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Sam</div>
-                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">Dim</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">L</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">M</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">M</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">J</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">V</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">S</div>
+                        <div class="col border border-left-0 border-right-0 border-top-0 border-dark">D</div>
                     </div>
                     <?php
                         $today = new DateTime();
@@ -118,7 +118,7 @@
                                 echo "<div class='row'>";
                             }
                             
-                            $class = "col border border-top-0 border-dark";
+                            $class = "col border border-dark p-0 border-top-0";
                             if($currentDate->format('w') != '1') {
                                 $class .= "  border-left-0";
                             }
